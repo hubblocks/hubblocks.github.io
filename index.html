@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="el" data-lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HubBlocks: Coding for Robots</title>
+<meta name="description" content="Δωρεάν προγραμματισμός με blocks για το hub του LEGO® Education WeDo 2.0. Σε tablet και υπολογιστή, χωρίς internet, χωρίς Scratch Link. Free block coding for the LEGO® Education WeDo 2.0 hub.">
+<meta property="og:title" content="HubBlocks: Coding for Robots">
+<meta property="og:description" content="Free block coding for the LEGO® Education WeDo 2.0 hub — on tablets and computers, offline, without Scratch Link.">
+<meta property="og:image" content="https://hubblocks.github.io/hubblocks-icon-512.png">
+<meta name="theme-color" content="#006BB6">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --soft: #F3F7FB;
+    --ink: #102A43;
+    --muted: #52667A;
+    --line: #DCE5EE;
+    --lime: #84C13E;
+    --lime-dark: #5E9426;
+    --blue: #006BB6;
+    --blue-dark: #00528C;
+    --card: #FFFFFF;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0E1620;
+      --soft: #142030;
+      --ink: #E6EEF6;
+      --muted: #9DB0C3;
+      --line: #263649;
+      --card: #172433;
+      --blue: #3A9BE0;
+      --blue-dark: #1F7FC4;
+      color-scheme: dark;
+    }
+  }
+  html[data-lang="el"] [lang="en"], html[data-lang="en"] [lang="el"] { display: none !important; }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: 72px; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif; line-height: 1.6;
+  }
+  a { color: var(--blue); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 22px; }
+
+  nav {
+    position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; gap: 18px; height: 60px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; color: var(--ink); text-decoration: none; font-size: 1.1rem; }
+  .brand img { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--line); }
+  .links { display: flex; gap: 16px; margin-left: auto; font-size: .93rem; }
+  .links a { color: var(--muted); text-decoration: none; }
+  .links a:hover { color: var(--ink); }
+  .lang { display: flex; gap: 4px; }
+  .lang button {
+    font: inherit; font-size: .82rem; font-weight: 600; padding: 5px 10px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line); background: transparent; color: var(--muted);
+  }
+  .lang button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  @media (max-width: 760px) { .links { display: none; } .lang { margin-left: auto; } }
+
+  header.hero { padding: 64px 0 56px; background: linear-gradient(180deg, var(--soft), var(--bg)); }
+  .hero .wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; }
+  @media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; } }
+  .eyebrow { display: inline-block; font-weight: 700; font-size: .82rem; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--lime-dark); background: color-mix(in srgb, var(--lime) 18%, transparent); padding: 4px 10px; border-radius: 999px; }
+  h1 { font-size: clamp(2.1rem, 5vw, 3.3rem); line-height: 1.08; margin: 14px 0 14px; letter-spacing: -0.02em; }
+  h1 .accent { color: var(--blue); }
+  .lead { font-size: 1.15rem; color: var(--muted); margin: 0 0 26px; max-width: 34em; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700;
+    padding: 13px 22px; border-radius: 12px; border: 2px solid transparent;
+  }
+  .btn.primary { background: var(--blue); color: #FFFFFF; }
+  .btn.primary:hover { background: var(--blue-dark); }
+  .btn.ghost { border-color: var(--line); color: var(--ink); }
+  .note { margin-top: 18px; font-size: .86rem; color: var(--muted); }
+  .hero-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 26px; text-align: center;
+    box-shadow: 0 18px 40px -24px rgba(16, 42, 67, .35);
+  }
+  .hero-card img.icon { width: 120px; height: 120px; border-radius: 26px; border: 1px solid var(--line); }
+  .hero-card .qr { background: #FFFFFF; display: inline-block; padding: 8px; border-radius: 12px; margin-top: 14px; line-height: 0; }
+  .hero-card .qr img { width: 150px; height: 150px; image-rendering: pixelated; }
+  .hero-card p { margin: 10px 0 0; color: var(--muted); font-size: .9rem; }
+
+  section { padding: 56px 0; }
+  section.alt { background: var(--soft); }
+  h2 { font-size: 1.7rem; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 28px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .card .ico { font-size: 1.6rem; }
+  .card h3 { margin: 8px 0 6px; font-size: 1.05rem; }
+  .card p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+  .devices { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .devices ul { margin: 8px 0 0; padding-left: 1.2em; }
+  .ok h3 { color: var(--lime-dark); }
+  .no h3 { color: #C2410C; }
+
+  ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; gap: 12px; }
+  ol.steps li {
+    counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px 18px 16px 64px; position: relative;
+  }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 18px; top: 15px; width: 32px; height: 32px; border-radius: 50%;
+    background: var(--lime); color: #FFFFFF; font-weight: 800; display: grid; place-items: center;
+  }
+  ol.steps b { display: block; }
+  ol.steps span { color: var(--muted); }
+
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin-bottom: 10px; }
+  summary { cursor: pointer; font-weight: 700; }
+  details p, details ul { color: var(--muted); margin: 10px 0 0; }
+  table.codes { border-collapse: collapse; margin-top: 10px; }
+  table.codes td { border: 1px solid var(--line); padding: 4px 12px; }
+
+  footer { border-top: 1px solid var(--line); padding: 34px 0 calc(34px + env(safe-area-inset-bottom, 0px)); font-size: .88rem; color: var(--muted); }
+  footer .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
+  footer h4 { margin: 0 0 6px; color: var(--ink); }
+  footer p { margin: 0 0 8px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: 6px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#"><img src="hubblocks-icon-192.png" alt="">HubBlocks</a>
+    <div class="links">
+      <a href="#features"><span lang="el">Τι κάνει</span><span lang="en">Features</span></a>
+      <a href="#setup"><span lang="el">Ξεκινώντας</span><span lang="en">Get started</span></a>
+      <a href="#faq"><span lang="el">Ερωτήσεις</span><span lang="en">FAQ</span></a>
+      <a href="privacy.html"><span lang="el">Απόρρητο</span><span lang="en">Privacy</span></a>
+    </div>
+    <div class="lang" role="group" aria-label="Γλώσσα / Language">
+      <button type="button" data-set="el">ΕΛ</button>
+      <button type="button" data-set="en">EN</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow"><span lang="el">Δωρεάν · Ανοιχτός κώδικας</span><span lang="en">Free · Open source</span></span>
+      <h1>HubBlocks: <span class="accent"><span lang="el">Προγραμματισμός για ρομπότ</span><span lang="en">Coding for Robots</span></span></h1>
+      <p class="lead">
+        <span lang="el">Προγραμματισμός με blocks για το hub του LEGO® Education WeDo 2.0. Σε tablet και υπολογιστή, χωρίς εγκατάσταση, χωρίς Scratch Link και χωρίς internet μέσα στην τάξη.</span>
+        <span lang="en">Block coding for the LEGO® Education WeDo 2.0 hub. On tablets and computers, with nothing to install, no Scratch Link, and no internet needed in class.</span>
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="editor/">▶ <span lang="el">Άνοιξε το HubBlocks</span><span lang="en">Open HubBlocks</span></a>
+        <a class="btn ghost" href="#setup"><span lang="el">Πώς ξεκινάω</span><span lang="en">How to start</span></a>
+      </div>
+      <p class="note">
+        <span lang="el">Λειτουργεί με το LEGO® Education WeDo 2.0. Το HubBlocks δεν σχετίζεται με τον όμιλο LEGO και δεν έχει την έγκρισή του.</span>
+        <span lang="en">Works with LEGO® Education WeDo 2.0. HubBlocks is not affiliated with, or endorsed by, the LEGO Group.</span>
+      </p>
+    </div>
+    <div class="hero-card">
+      <img class="icon" src="hubblocks-icon-512.png" alt="HubBlocks">
+      <div class="qr"><img src="qr-editor.png" alt="QR: hubblocks.github.io/editor"></div>
+      <p><span lang="el">Σάρωσε με το tablet για να ανοίξει η εφαρμογή</span><span lang="en">Scan with a tablet to open the app</span></p>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <h2><span lang="el">Τι κάνει</span><span lang="en">What it does</span></h2>
+    <p class="sub"><span lang="el">Ό,τι χρειάζεται μια τάξη, χωρίς τα συνηθισμένα εμπόδια.</span><span lang="en">Everything a classroom needs, without the usual hurdles.</span></p>
+    <div class="grid">
+      <div class="card"><div class="ico">🔌</div>
+        <h3><span lang="el">Χωρίς Scratch Link</span><span lang="en">No Scratch Link</span></h3>
+        <p><span lang="el">Το hub συνδέεται απευθείας από τον browser με Bluetooth. Τίποτα δεν εγκαθίσταται στον υπολογιστή.</span><span lang="en">The hub connects straight from the browser over Bluetooth. Nothing to install on the computer.</span></p></div>
+      <div class="card"><div class="ico">📶</div>
+        <h3><span lang="el">Λειτουργεί χωρίς internet</span><span lang="en">Works offline</span></h3>
+        <p><span lang="el">Εγκατέστησέ το μία φορά ως εφαρμογή και ανοίγει από εικονίδιο, ακόμα και χωρίς σύνδεση.</span><span lang="en">Install it once as an app and it opens from an icon, even with no connection.</span></p></div>
+      <div class="card"><div class="ico">🇬🇷</div>
+        <h3><span lang="el">Ελληνικά & Αγγλικά</span><span lang="en">Greek & English</span></h3>
+        <p><span lang="el">Όλα τα blocks του hub στα ελληνικά, και ο editor σε όποια γλώσσα θέλεις.</span><span lang="en">All hub blocks in Greek or English, and the editor in the language you choose.</span></p></div>
+      <div class="card"><div class="ico">🧩</div>
+        <h3><span lang="el">Συμβατό με Scratch 3</span><span lang="en">Scratch 3 compatible</span></h3>
+        <p><span lang="el">Ο γνωστός editor με όλα τα blocks του Scratch, ήχους, sprites και αρχεία .sb3.</span><span lang="en">The familiar editor with all Scratch blocks, sounds, sprites and .sb3 files.</span></p></div>
+    </div>
+    <div class="grid" style="margin-top: 16px;">
+      <div class="card"><div class="ico">⚙️</div>
+        <h3><span lang="el">Μοτέρ & φως</span><span lang="en">Motor & light</span></h3>
+        <p><span lang="el">Ισχύς 0–10, φορά, χρονισμός, και τα 11 χρώματα του φωτός του hub.</span><span lang="en">Power 0–10, direction, timing, and the hub light's 11 colours.</span></p></div>
+      <div class="card"><div class="ico">📏</div>
+        <h3><span lang="el">Αισθητήρες</span><span lang="en">Sensors</span></h3>
+        <p><span lang="el">Αισθητήρας απόστασης και κλίσης, με hat blocks «όταν…» για άμεση αντίδραση.</span><span lang="en">Distance and tilt sensors, with "when…" hat blocks for instant reactions.</span></p></div>
+      <div class="card"><div class="ico">🏫</div>
+        <h3><span lang="el">Για την τάξη</span><span lang="en">Made for class</span></h3>
+        <p><span lang="el">Μετονομασία των hub («Ομάδα 1, 2…»), αυτόματη επανασύνδεση, το κόκκινο stop σταματά τα μοτέρ.</span><span lang="en">Rename hubs ("Team 1, 2…"), automatic reconnection, and the red stop sign stops the motors.</span></p></div>
+      <div class="card"><div class="ico">💚</div>
+        <h3><span lang="el">Δωρεάν για πάντα</span><span lang="en">Free forever</span></h3>
+        <p><span lang="el">Χωρίς λογαριασμούς, χωρίς διαφημίσεις, χωρίς συλλογή δεδομένων.</span><span lang="en">No accounts, no ads, no data collection.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="setup">
+  <div class="wrap">
+    <h2><span lang="el">Ξεκινώντας</span><span lang="en">Getting started</span></h2>
+    <p class="sub"><span lang="el">Από το κουτί στο πρώτο πρόγραμμα σε λίγα λεπτά.</span><span lang="en">From the box to the first program in a few minutes.</span></p>
+    <div class="devices" style="margin-bottom: 24px;">
+      <div class="card ok"><h3>✓ <span lang="el">Λειτουργεί σε</span><span lang="en">Works on</span></h3>
+        <ul>
+          <li><span lang="el">Windows, ChromeOS, macOS με <b>Chrome</b> ή <b>Edge</b></span><span lang="en">Windows, ChromeOS, macOS with <b>Chrome</b> or <b>Edge</b></span></li>
+          <li><span lang="el">Tablet και κινητά <b>Android</b> με <b>Chrome</b></span><span lang="en"><b>Android</b> tablets and phones with <b>Chrome</b></span></li>
+          <li><span lang="el">Συσκευή με Bluetooth (σχεδόν όλες οι σύγχρονες)</span><span lang="en">A device with Bluetooth (almost all modern ones)</span></li>
+        </ul></div>
+      <div class="card no"><h3>✗ <span lang="el">Δεν λειτουργεί σε</span><span lang="en">Doesn't work on</span></h3>
+        <ul>
+          <li><span lang="el">iPad και iPhone (η Apple δεν επιτρέπει Bluetooth από ιστοσελίδες)</span><span lang="en">iPad and iPhone (Apple doesn't allow Bluetooth from web pages)</span></li>
+          <li><span lang="el">Firefox και Safari</span><span lang="en">Firefox and Safari</span></li>
+        </ul></div>
+    </div>
+    <ol class="steps">
+      <li><b><span lang="el">Άνοιξε το HubBlocks</span><span lang="en">Open HubBlocks</span></b>
+        <span><span lang="el">Από το κουμπί παραπάνω ή σαρώνοντας τον κωδικό QR.</span><span lang="en">With the button above or by scanning the QR code.</span></span></li>
+      <li><b><span lang="el">Εγκατέστησέ το (μία φορά)</span><span lang="en">Install it (once)</span></b>
+        <span><span lang="el">Στο Chrome: εικονίδιο εγκατάστασης στη γραμμή διευθύνσεων ή μενού ⋮ → «Εγκατάσταση εφαρμογής». Από εκεί και πέρα ανοίγει από εικονίδιο και λειτουργεί χωρίς internet.</span><span lang="en">In Chrome: the install icon in the address bar, or menu ⋮ → "Install app". From then on it opens from an icon and works offline.</span></span></li>
+      <li><b><span lang="el">Άναψε το hub</span><span lang="en">Turn on the hub</span></b>
+        <span><span lang="el">Πάτα το κουμπί του hub· το φως αναβοσβήνει όσο περιμένει σύνδεση.</span><span lang="en">Press the hub button; the light blinks while it waits for a connection.</span></span></li>
+      <li><b><span lang="el">Σύνδεση</span><span lang="en">Connect</span></b>
+        <span><span lang="el">Στην κατηγορία <b>Hub</b> πάτα «🔗 Σύνδεση με το hub» και διάλεξε το hub από τη λίστα. Όταν συνδεθεί, το φως του γίνεται μπλε.</span><span lang="en">In the <b>Hub</b> category, press "🔗 Connect hub" and pick the hub from the list. Once connected, its light turns blue.</span></span></li>
+      <li><b><span lang="el">Προγραμμάτισε!</span><span lang="en">Start coding!</span></b>
+        <span><span lang="el">Δοκίμασε: «όταν γίνει κλικ στη σημαία → μοτέρ ενεργοποίηση για 1 δευτερόλεπτα».</span><span lang="en">Try: "when green flag clicked → turn motor on for 1 seconds".</span></span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2><span lang="el">Συχνές ερωτήσεις</span><span lang="en">Frequently asked questions</span></h2>
+    <p class="sub"><span lang="el">Τα πιο συνηθισμένα θέματα στην τάξη.</span><span lang="en">The most common classroom issues.</span></p>
+
+    <details><summary><span lang="el">Βγαίνει «No compatible devices found» / δεν εμφανίζεται το hub</span><span lang="en">"No compatible devices found" / the hub doesn't appear</span></summary>
+      <ul>
+        <li><span lang="el">Πάτα ξανά το κουμπί του hub, ώστε να αναβοσβήνει, και δοκίμασε αμέσως.</span><span lang="en">Press the hub button again so it blinks, and try right away.</span></li>
+        <li><span lang="el">Μπορεί να είναι ήδη συνδεδεμένο αλλού: κλείσε άλλες καρτέλες ή άλλες εφαρμογές που το χρησιμοποιούν.</span><span lang="en">It may already be connected elsewhere: close other tabs or apps that use it.</span></li>
+        <li><span lang="el">Έλεγξε ότι το Bluetooth της συσκευής είναι ανοιχτό· αν χρειαστεί, κλείσ' το και άνοιξέ το ξανά.</span><span lang="en">Check the device's Bluetooth is on; if needed, switch it off and on again.</span></li>
+      </ul></details>
+
+    <details><summary><span lang="el">Σε tablet Android δεν βρίσκει τίποτα</span><span lang="en">On an Android tablet nothing is found</span></summary>
+      <p><span lang="el">Ο Chrome χρειάζεται την άδεια «Συσκευές κοντά» (Nearby devices) και ενεργή Τοποθεσία. Ρυθμίσεις → Εφαρμογές → Chrome → Άδειες.</span><span lang="en">Chrome needs the "Nearby devices" permission and Location turned on. Settings → Apps → Chrome → Permissions.</span></p></details>
+
+    <details><summary><span lang="el">Πολλά hub στην ίδια τάξη: πώς ξέρω ποιο είναι το δικό μου;</span><span lang="en">Many hubs in one class: which one is mine?</span></summary>
+      <p><span lang="el">Χρησιμοποίησε μία φορά το block «μετονόμασε το hub σε…» με όνομα όπως «Omada 1». Μετά από επανεκκίνηση του hub, αυτό το όνομα εμφανίζεται στη λίστα σύνδεσης. Προτίμησε λατινικούς χαρακτήρες και σύντομα ονόματα.</span><span lang="en">Use the "rename hub to…" block once with a name like "Team 1". After restarting the hub, that name appears in the connection list. Prefer short names in Latin letters.</span></p></details>
+
+    <details><summary><span lang="el">Γιατί δεν βγάζει ήχο το hub;</span><span lang="en">Why doesn't the hub make sounds?</span></summary>
+      <p><span lang="el">Το hub δεν έχει ηχείο. Οι ήχοι παίζουν από τον υπολογιστή ή το tablet, με την κατηγορία «Ήχος» ή την επέκταση «Μουσική» — όπως και στην επίσημη εφαρμογή.</span><span lang="en">The hub has no speaker. Sounds play from the computer or tablet, using the "Sound" category or the "Music" extension — as in the official app.</span></p></details>
+
+    <details><summary><span lang="el">Τι σημαίνει ο «κωδικός κλίσης»;</span><span lang="en">What does the "tilt code" mean?</span></summary>
+      <p><span lang="el">Ο αισθητήρας κλίσης δίνει έναν αριθμό για κάθε κατεύθυνση:</span><span lang="en">The tilt sensor reports a number for each direction:</span></p>
+      <table class="codes">
+        <tr><td>0</td><td><span lang="el">καμία κλίση</span><span lang="en">no tilt</span></td></tr>
+        <tr><td>3</td><td><span lang="el">κάτω (προς τα πίσω)</span><span lang="en">down (backward)</span></td></tr>
+        <tr><td>5</td><td><span lang="el">δεξιά</span><span lang="en">right</span></td></tr>
+        <tr><td>7</td><td><span lang="el">αριστερά</span><span lang="en">left</span></td></tr>
+        <tr><td>9</td><td><span lang="el">πάνω (προς τα μπρος)</span><span lang="en">up (forward)</span></td></tr>
+      </table></details>
+
+    <details><summary><span lang="el">Αποθηκεύονται κάπου τα projects των μαθητών;</span><span lang="en">Are students' projects stored anywhere?</span></summary>
+      <p><span lang="el">Όχι σε κάποιον server. Τα projects μένουν στη συσκευή και αποθηκεύονται ως αρχεία .sb3 με «Αρχείο → Αποθήκευση στον υπολογιστή σου». Δες την <a href="privacy.html">πολιτική απορρήτου</a>.</span><span lang="en">Not on any server. Projects stay on the device and are saved as .sb3 files with "File → Save to your computer". See the <a href="privacy.html">privacy policy</a>.</span></p></details>
+
+    <details><summary><span lang="el">Είναι επίσημη εφαρμογή της LEGO;</span><span lang="en">Is this an official LEGO app?</span></summary>
+      <p><span lang="el">Όχι. Το HubBlocks είναι ανεξάρτητο, δωρεάν εργαλείο ανοιχτού κώδικα που συνεργάζεται με το hub του WeDo 2.0. Δεν σχετίζεται με τον όμιλο LEGO.</span><span lang="en">No. HubBlocks is an independent, free, open-source tool that works with the WeDo 2.0 hub. It is not affiliated with the LEGO Group.</span></p></details>
+
+    <details><summary><span lang="el">Βρήκα πρόβλημα ή έχω μια ιδέα</span><span lang="en">I found a problem or have an idea</span></summary>
+      <p><span lang="el">Γράψε το στα <a href="https://github.com/hubblocks/editor/issues">Issues του GitHub</a> — κάθε σχόλιο από την τάξη βοηθά.</span><span lang="en">Post it in the <a href="https://github.com/hubblocks/editor/issues">GitHub Issues</a> — every classroom report helps.</span></p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap cols">
+    <div>
+      <h4>HubBlocks</h4>
+      <p><span lang="el">Δημιουργία: Κωνσταντίνος Μπεζαΐτης. Δωρεάν για όλους τους εκπαιδευτικούς.</span><span lang="en">Created by Konstantinos Bezaitis. Free for all teachers.</span></p>
+      <p><a href="https://github.com/hubblocks/editor"><span lang="el">Πηγαίος κώδικας</span><span lang="en">Source code</span></a> · <a href="privacy.html"><span lang="el">Απόρρητο</span><span lang="en">Privacy</span></a></p>
+    </div>
+    <div>
+      <h4><span lang="el">Ευχαριστίες & άδειες</span><span lang="en">Credits & licences</span></h4>
+      <p><span lang="el">Βασίζεται στο <a href="https://turbowarp.org">TurboWarp</a> (GPL-3.0), που βασίζεται στο Scratch. Το Scratch είναι έργο του Scratch Foundation, σε συνεργασία με την ομάδα Lifelong Kindergarten του MIT Media Lab. Το HubBlocks δεν σχετίζεται με το Scratch ή το TurboWarp.</span><span lang="en">Based on <a href="https://turbowarp.org">TurboWarp</a> (GPL-3.0), which is based on Scratch. Scratch is a project of the Scratch Foundation, in collaboration with the Lifelong Kindergarten Group at the MIT Media Lab. HubBlocks is not affiliated with Scratch or TurboWarp.</span></p>
+    </div>
+    <div>
+      <h4><span lang="el">Εμπορικά σήματα</span><span lang="en">Trademarks</span></h4>
+      <p><span lang="el">Τα LEGO® και WeDo είναι εμπορικά σήματα του ομίλου LEGO, ο οποίος δεν χορηγεί, δεν εξουσιοδοτεί και δεν εγκρίνει αυτόν τον ιστότοπο.</span><span lang="en">LEGO® and WeDo are trademarks of the LEGO Group, which does not sponsor, authorize or endorse this site.</span></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('hubblocks-site-lang'); } catch (e) {}
+    var lang = saved || ((navigator.language || '').toLowerCase().indexOf('el') === 0 ? 'el' : 'en');
+    function set (l) {
+      document.documentElement.setAttribute('data-lang', l);
+      document.documentElement.lang = l;
+      document.querySelectorAll('[data-set]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.set === l)); });
+      try { localStorage.setItem('hubblocks-site-lang', l); } catch (e) {}
+    }
+    document.querySelectorAll('[data-set]').forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.set); }); });
+    set(lang);
+  })();
+</script>
+</body>
+</html>
