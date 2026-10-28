@@ -1,0 +1,8 @@
+   [{
+     "relation": ["delegate_permission/common.handle_all_urls"],
+     "target": {
+       "namespace": "android_app",
+       "package_name": "io.github.hubblocks.app",
+       "sha256_cert_fingerprints": ["EE:A2:55:EE:8E:59:E8:C0:46:A3:C4:8A:69:EA:3A:73:29:B2:FD:1F:79:8C:D2:A9:55:92:7B:E4:FF:26:D7:D8"]
+     }
+   }]
