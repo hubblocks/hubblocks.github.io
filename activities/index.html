@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="el" data-lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HubBlocks – Δραστηριότητες / Activities</title>
+<meta name="theme-color" content="#006BB6">
+<link rel="icon" href="../favicon.ico">
+<style>
+  :root {
+    --bg: #FFFFFF; --soft: #F3F7FB; --ink: #102A43; --muted: #52667A; --line: #DCE5EE; --card: #FFFFFF;
+    --lime: #84C13E; --lime-dark: #5E9426; --blue: #006BB6; --blue-dark: #00528C;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0E1620; --soft: #142030; --ink: #E6EEF6; --muted: #9DB0C3; --line: #263649; --card: #172433;
+            --blue: #3A9BE0; --blue-dark: #1F7FC4; color-scheme: dark; }
+  }
+  html[data-lang="el"] [lang="en"], html[data-lang="en"] [lang="el"] { display: none !important; }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: 72px; }
+  body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.6;
+         font-family: "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif; }
+  a { color: var(--blue); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 22px; }
+  nav { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 92%, transparent);
+        backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; gap: 16px; height: 60px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; color: var(--ink); text-decoration: none; }
+  .brand img { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--line); }
+  .links { display: flex; gap: 14px; margin-left: auto; font-size: .92rem; }
+  .links a { color: var(--muted); text-decoration: none; }
+  .lang { display: flex; gap: 4px; }
+  .lang button { font: inherit; font-size: .82rem; font-weight: 600; padding: 5px 10px; border-radius: 999px; cursor: pointer;
+                 border: 1px solid var(--line); background: transparent; color: var(--muted); }
+  .lang button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  @media (max-width: 760px) { .links { display: none; } .lang { margin-left: auto; } }
+
+  header.hero { background: linear-gradient(180deg, var(--soft), var(--bg)); padding: 40px 0 30px; }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 30px; align-items: center; }
+  @media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; } }
+  .crumb { font-size: .88rem; color: var(--muted); }
+  .crumb a { color: var(--muted); }
+  h1 { font-size: clamp(1.9rem, 4.4vw, 2.7rem); line-height: 1.12; margin: 8px 0 12px; letter-spacing: -0.02em; }
+  .lead { color: var(--muted); font-size: 1.08rem; margin: 0 0 18px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: .88rem; }
+  .hero img.model { width: 100%; height: auto; border-radius: 18px; background: #FFFFFF; border: 1px solid var(--line); }
+
+  section { padding: 44px 0; }
+  section.alt { background: var(--soft); }
+  h2 { font-size: 1.6rem; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 22px; }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+  .card ul { margin: 6px 0 0; padding-left: 1.2em; }
+
+  /* step viewer */
+  .viewer { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  .viewer .stage { background: #FFFFFF; display: grid; place-items: center; aspect-ratio: 1287 / 870; }
+  .viewer .stage img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .controls { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+  .controls button { font: inherit; font-weight: 700; font-size: 1.05rem; border: 0; border-radius: 12px; padding: 10px 18px;
+                     background: var(--blue); color: #FFFFFF; cursor: pointer; min-width: 64px; }
+  .controls button:disabled { opacity: .35; cursor: default; }
+  .controls input[type=range] { flex: 1; min-width: 140px; accent-color: var(--lime-dark); }
+  .counter { font-weight: 700; min-width: 70px; text-align: center; }
+  .viewer-note { color: var(--muted); font-size: .9rem; margin: 10px 2px 0; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; padding: 10px 16px;
+         border-radius: 12px; border: 2px solid transparent; }
+  .btn.primary { background: var(--blue); color: #FFFFFF; }
+  .btn.lime { background: var(--lime); color: #FFFFFF; }
+  .btn.ghost { border-color: var(--line); color: var(--ink); }
+
+  /* programs */
+  .prog { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px; margin-bottom: 18px;
+          display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 22px; }
+  @media (max-width: 860px) { .prog { grid-template-columns: 1fr; } }
+  .prog .num { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+               background: var(--lime); color: #FFFFFF; font-weight: 800; margin-right: 8px; }
+  .prog h3 { margin: 0 0 8px; font-size: 1.2rem; display: flex; align-items: center; }
+  .prog p { margin: 6px 0; }
+  .prog .label { font-weight: 700; color: var(--lime-dark); }
+  .prog .blocks { background: #F9FAFB; border: 1px solid var(--line); border-radius: 14px; padding: 10px; overflow-x: auto; }
+  .prog .blocks img { display: block; max-width: 100%; height: auto; }
+  .prog .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin-bottom: 10px; }
+  summary { cursor: pointer; font-weight: 700; }
+  details ul, details p { color: var(--muted); }
+  footer { border-top: 1px solid var(--line); padding: 26px 0 calc(26px + env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: .86rem; }
+  a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+</style>
+<style>
+  .acts { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+  .act { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; text-decoration: none; color: var(--ink);
+          display: flex; flex-direction: column; transition: transform .15s; }
+  .act:hover { transform: translateY(-3px); }
+  .act img { width: 100%; aspect-ratio: 620/390; object-fit: cover; background: #FFFFFF; border-bottom: 1px solid var(--line); }
+  .act .body { padding: 16px 18px; }
+  .act h3 { margin: 0 0 6px; }
+  .act p { margin: 0 0 10px; color: var(--muted); }
+  .act.soon { opacity: .6; pointer-events: none; }
+  .act.soon .ph { aspect-ratio: 620/390; display: grid; place-items: center; font-size: 3rem; background: var(--soft); border-bottom: 1px solid var(--line); }
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="../"><img src="../hubblocks-icon-192.png" alt="">HubBlocks</a>
+    <div class="links"><a href="../editor/"><span lang="el">Άνοιγμα HubBlocks</span><span lang="en">Open HubBlocks</span></a></div>
+    <div class="lang" role="group" aria-label="Γλώσσα / Language">
+      <button type="button" data-set="el">ΕΛ</button><button type="button" data-set="en">EN</button>
+    </div>
+  </div>
+</nav>
+<header class="hero" style="padding-bottom: 10px;">
+  <div class="wrap" style="display:block;">
+    <h1><span lang="el">Δραστηριότητες</span><span lang="en">Sample activities</span></h1>
+    <p class="lead"><span lang="el">Έτοιμα μαθήματα με οδηγίες κατασκευής, έτοιμα προγράμματα που ανοίγουν με ένα κλικ στο HubBlocks, και προκλήσεις για τους μαθητές.</span>
+    <span lang="en">Ready-made lessons with building instructions, sample programs that open in HubBlocks with one click, and challenges for students.</span></p>
+  </div>
+</header>
+<section>
+  <div class="wrap acts">
+    <a class="act" href="vehicle/">
+      <img src="vehicle/model.png" alt="" width="620" height="390">
+      <div class="body">
+        <h3><span lang="el">1 · Νέοι τρόποι να οδηγήσεις ένα απλό όχημα</span><span lang="en">1 · New ways to drive a simple vehicle</span></h3>
+        <p><span lang="el">Όχημα με ιμάντα · 6 προγράμματα: σημαία, κουμπί του hub, πληκτρολόγιο, αισθητήρας απόστασης.</span><span lang="en">Belt-driven vehicle · 6 programs: flag, hub button, keyboard, distance sensor.</span></p>
+        <div class="chips"><span class="chip">★☆☆</span><span class="chip">⏱ 2 × 45′</span><span class="chip">👧 8–12</span></div>
+      </div>
+    </a>
+    <div class="act soon">
+      <div class="ph">🚧</div>
+      <div class="body"><h3><span lang="el">Σύντομα…</span><span lang="en">Coming soon…</span></h3>
+      <p><span lang="el">Η επόμενη δραστηριότητα ετοιμάζεται.</span><span lang="en">The next activity is on its way.</span></p></div>
+    </div>
+  </div>
+</section>
+<footer><div class="wrap">
+  <span lang="el">Τα LEGO® και WeDo είναι εμπορικά σήματα του ομίλου LEGO, ο οποίος δεν χορηγεί, δεν εξουσιοδοτεί και δεν εγκρίνει αυτόν τον ιστότοπο.</span>
+  <span lang="en">LEGO® and WeDo are trademarks of the LEGO Group, which does not sponsor, authorize or endorse this site.</span>
+  · <a href="../privacy.html"><span lang="el">Απόρρητο</span><span lang="en">Privacy</span></a>
+</div></footer>
+<script>
+  // ---------- language ----------
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('hubblocks-site-lang'); } catch (e) {}
+    var lang = saved || ((navigator.language || '').toLowerCase().indexOf('el') === 0 ? 'el' : 'en');
+    function set (l) {
+      document.documentElement.setAttribute('data-lang', l); document.documentElement.lang = l;
+      document.querySelectorAll('[data-set]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.set === l)); });
+      try { localStorage.setItem('hubblocks-site-lang', l); } catch (e) {}
+    }
+    document.querySelectorAll('[data-set]').forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.set); }); });
+    set(lang);
+  })();
+
+</script>
+</body>
+</html>

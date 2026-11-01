@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="el" data-lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HubBlocks – Οδηγώντας ένα απλό όχημα / Driving a simple vehicle</title>
+<meta name="description" content="Δραστηριότητα HubBlocks: κατασκευή οχήματος με ιμάντα και 6 προγράμματα για το hub του LEGO® Education WeDo 2.0.">
+<meta name="theme-color" content="#006BB6">
+<link rel="icon" href="../../favicon.ico">
+<style>
+  :root {
+    --bg: #FFFFFF; --soft: #F3F7FB; --ink: #102A43; --muted: #52667A; --line: #DCE5EE; --card: #FFFFFF;
+    --lime: #84C13E; --lime-dark: #5E9426; --blue: #006BB6; --blue-dark: #00528C;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0E1620; --soft: #142030; --ink: #E6EEF6; --muted: #9DB0C3; --line: #263649; --card: #172433;
+            --blue: #3A9BE0; --blue-dark: #1F7FC4; color-scheme: dark; }
+  }
+  html[data-lang="el"] [lang="en"], html[data-lang="en"] [lang="el"] { display: none !important; }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: 72px; }
+  body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.6;
+         font-family: "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif; }
+  a { color: var(--blue); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 22px; }
+  nav { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 92%, transparent);
+        backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; gap: 16px; height: 60px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; color: var(--ink); text-decoration: none; }
+  .brand img { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--line); }
+  .links { display: flex; gap: 14px; margin-left: auto; font-size: .92rem; }
+  .links a { color: var(--muted); text-decoration: none; }
+  .lang { display: flex; gap: 4px; }
+  .lang button { font: inherit; font-size: .82rem; font-weight: 600; padding: 5px 10px; border-radius: 999px; cursor: pointer;
+                 border: 1px solid var(--line); background: transparent; color: var(--muted); }
+  .lang button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  @media (max-width: 760px) { .links { display: none; } .lang { margin-left: auto; } }
+
+  header.hero { background: linear-gradient(180deg, var(--soft), var(--bg)); padding: 40px 0 30px; }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 30px; align-items: center; }
+  @media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; } }
+  .crumb { font-size: .88rem; color: var(--muted); }
+  .crumb a { color: var(--muted); }
+  h1 { font-size: clamp(1.9rem, 4.4vw, 2.7rem); line-height: 1.12; margin: 8px 0 12px; letter-spacing: -0.02em; }
+  .lead { color: var(--muted); font-size: 1.08rem; margin: 0 0 18px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: .88rem; }
+  .hero img.model { width: 100%; height: auto; border-radius: 18px; background: #FFFFFF; border: 1px solid var(--line); }
+
+  section { padding: 44px 0; }
+  section.alt { background: var(--soft); }
+  h2 { font-size: 1.6rem; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 22px; }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+  .card ul { margin: 6px 0 0; padding-left: 1.2em; }
+
+  /* step viewer */
+  .viewer { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  .viewer .stage { background: #FFFFFF; display: grid; place-items: center; aspect-ratio: 1287 / 870; }
+  .viewer .stage img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .controls { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+  .controls button { font: inherit; font-weight: 700; font-size: 1.05rem; border: 0; border-radius: 12px; padding: 10px 18px;
+                     background: var(--blue); color: #FFFFFF; cursor: pointer; min-width: 64px; }
+  .controls button:disabled { opacity: .35; cursor: default; }
+  .controls input[type=range] { flex: 1; min-width: 140px; accent-color: var(--lime-dark); }
+  .counter { font-weight: 700; min-width: 70px; text-align: center; }
+  .viewer-note { color: var(--muted); font-size: .9rem; margin: 10px 2px 0; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; padding: 10px 16px;
+         border-radius: 12px; border: 2px solid transparent; }
+  .btn.primary { background: var(--blue); color: #FFFFFF; }
+  .btn.lime { background: var(--lime); color: #FFFFFF; }
+  .btn.ghost { border-color: var(--line); color: var(--ink); }
+
+  /* programs */
+  .prog { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px; margin-bottom: 18px;
+          display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 22px; }
+  @media (max-width: 860px) { .prog { grid-template-columns: 1fr; } }
+  .prog .num { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+               background: var(--lime); color: #FFFFFF; font-weight: 800; margin-right: 8px; }
+  .prog h3 { margin: 0 0 8px; font-size: 1.2rem; display: flex; align-items: center; }
+  .prog p { margin: 6px 0; }
+  .prog .label { font-weight: 700; color: var(--lime-dark); }
+  .prog .blocks { background: #F9FAFB; border: 1px solid var(--line); border-radius: 14px; padding: 10px; overflow-x: auto; }
+  .prog .blocks img { display: block; max-width: 100%; height: auto; }
+  .prog .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin-bottom: 10px; }
+  summary { cursor: pointer; font-weight: 700; }
+  details ul, details p { color: var(--muted); }
+  footer { border-top: 1px solid var(--line); padding: 26px 0 calc(26px + env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: .86rem; }
+  a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="../../"><img src="../../hubblocks-icon-192.png" alt="">HubBlocks</a>
+    <div class="links">
+      <a href="#build"><span lang="el">Κατασκευή</span><span lang="en">Build</span></a>
+      <a href="#how"><span lang="el">Πώς δουλεύει</span><span lang="en">How it works</span></a>
+      <a href="#programs"><span lang="el">Προγράμματα</span><span lang="en">Programs</span></a>
+      <a href="#challenges"><span lang="el">Προκλήσεις</span><span lang="en">Challenges</span></a>
+    </div>
+    <div class="lang" role="group" aria-label="Γλώσσα / Language">
+      <button type="button" data-set="el">ΕΛ</button>
+      <button type="button" data-set="en">EN</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="crumb"><a href="../"><span lang="el">Δραστηριότητες</span><span lang="en">Activities</span></a> · 1</div>
+      <h1><span lang="el">Νέοι τρόποι να οδηγήσεις ένα απλό όχημα</span><span lang="en">New ways to drive a simple vehicle</span></h1>
+      <p class="lead">
+        <span lang="el">Χτίστε ένα όχημα που κινείται με ιμάντα και προγραμματίστε το να ξεκινά με τη σημαία, με το κουμπί του hub, με το πληκτρολόγιο – και να σταματά μόνο του πριν από τον τοίχο.</span>
+        <span lang="en">Build a belt-driven vehicle and program it to start with the green flag, with the hub button, from the keyboard – and to stop by itself before a wall.</span>
+      </p>
+      <div class="chips">
+        <span class="chip">★☆☆ <span lang="el">Αρχάριοι</span><span lang="en">Beginner</span></span>
+        <span class="chip">⏱ <span lang="el">2 × 45 λεπτά</span><span lang="en">2 × 45 minutes</span></span>
+        <span class="chip">👧 <span lang="el">8–12 ετών</span><span lang="en">Ages 8–12</span></span>
+        <span class="chip">🧱 <span lang="el">24 κομμάτια + 1 λαστιχάκι</span><span lang="en">24 parts + 1 rubber band</span></span>
+      </div>
+    </div>
+    <img class="model" src="model.png" width="620" height="390" alt="Το όχημα με ιμάντα / The belt-driven vehicle">
+  </div>
+</header>
+
+<section>
+  <div class="wrap grid2">
+    <div class="card">
+      <h3>🎯 <span lang="el">Τι θα μάθουν οι μαθητές</span><span lang="en">What students learn</span></h3>
+      <ul>
+        <li><span lang="el">Γεγονότα: σημαία, κουμπί, πλήκτρα, αισθητήρας</span><span lang="en">Events: flag, button, keys, sensor</span></li>
+        <li><span lang="el">Ακολουθία εντολών και χρόνος</span><span lang="en">Sequences and timing</span></li>
+        <li><span lang="el">Φορά και ισχύς του μοτέρ</span><span lang="en">Motor direction and power</span></li>
+        <li><span lang="el">Μετάδοση κίνησης με ιμάντα</span><span lang="en">Transferring motion with a belt</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🧰 <span lang="el">Τι χρειάζεστε</span><span lang="en">What you need</span></h3>
+      <ul>
+        <li><span lang="el">Hub, μοτέρ και αισθητήρας απόστασης του WeDo 2.0</span><span lang="en">WeDo 2.0 hub, motor and distance sensor</span></li>
+        <li><span lang="el">Κομμάτια του βασικού σετ και ένα λαστιχάκι (ιμάντας)</span><span lang="en">Core set parts and one rubber band (belt)</span></li>
+        <li><span lang="el">Tablet ή υπολογιστής με το <a href="../../editor/">HubBlocks</a></span><span lang="en">A tablet or computer with <a href="../../editor/">HubBlocks</a></span></li>
+        <li><span lang="el">Ελεύθερος χώρος στο πάτωμα και μια μεζούρα</span><span lang="en">Some floor space and a measuring tape</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📖 <span lang="el">Η αποστολή</span><span lang="en">The mission</span></h3>
+      <p>
+        <span lang="el">Η εταιρεία «Γρανάζης Μεταφορές» χρειάζεται ένα μικρό όχημα για να μεταφέρει δέματα μέσα στην αποθήκη. Θα το χτίσετε, θα το δοκιμάσετε και θα βρείτε όσο περισσότερους τρόπους μπορείτε για να το οδηγείτε με ασφάλεια.</span>
+        <span lang="en">“Gearo Deliveries” needs a small vehicle to carry parcels around the warehouse. You will build it, test it, and find as many ways as you can to drive it safely.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="build">
+  <div class="wrap">
+    <h2>🧱 <span lang="el">Κατασκευή</span><span lang="en">Build</span></h2>
+    <p class="sub"><span lang="el">22 βήματα. Το καινούργιο κομμάτι κάθε βήματος έχει κόκκινο περίγραμμα.</span><span lang="en">22 steps. The new part in each step has a red outline.</span></p>
+    <div class="viewer">
+      <div class="stage"><img id="stepImg" src="steps/step-01.webp" alt="" width="1287" height="870"></div>
+      <div class="controls">
+        <button type="button" id="prev" aria-label="Previous">◀</button>
+        <span class="counter"><span id="stepNo">1</span> / 22</span>
+        <button type="button" id="next" aria-label="Next">▶</button>
+        <input type="range" id="slider" min="1" max="22" value="1" aria-label="Step">
+      </div>
+    </div>
+    <p class="viewer-note">
+      <span lang="el">Συμβουλή: τα βέλη του πληκτρολογίου αλλάζουν βήμα. Στο βήμα 21 μπαίνει ο ιμάντας και στο 22 τα καλώδια.</span>
+      <span lang="en">Tip: the keyboard arrows change step. Step 21 adds the belt, step 22 the cables.</span>
+    </p>
+    <p><a class="btn ghost" href="instructions.pdf" download>⬇ <span lang="el">Οδηγίες σε PDF για εκτύπωση</span><span lang="en">Printable PDF instructions</span></a></p>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap grid2">
+    <div class="card">
+      <h3>⚙️ <span lang="el">Πώς κινείται;</span><span lang="en">How does it move?</span></h3>
+      <p>
+        <span lang="el">Το μοτέρ γυρίζει τη μεγάλη τροχαλία του. Το λαστιχάκι μεταφέρει την κίνηση στο μικρό κίτρινο δαχτυλίδι του <b>πίσω άξονα</b>, που γυρίζει και τις δύο μεγάλες ρόδες. Οι μπροστινές ρόδες απλώς κυλάνε.</span>
+        <span lang="en">The motor turns its big pulley. The rubber band carries the motion to the small yellow bush on the <b>rear axle</b>, which turns both big wheels. The front wheels just roll along.</span>
+      </p>
+    </div>
+    <div class="card">
+      <h3>🔁 <span lang="el">Από μεγάλο σε μικρό = πιο γρήγορα</span><span lang="en">Big to small = faster</span></h3>
+      <p>
+        <span lang="el">Η τροχαλία του μοτέρ είναι πολύ μεγαλύτερη από το κίτρινο δαχτυλίδι. Σε κάθε στροφή του μοτέρ, ο πίσω άξονας κάνει πολλές στροφές – γι' αυτό το όχημα τρέχει. Ζητήστε από τους μαθητές να το δουν γυρίζοντας την τροχαλία αργά με το χέρι.</span>
+        <span lang="en">The motor pulley is much bigger than the yellow bush. For every turn of the motor, the rear axle turns several times – that's why the vehicle is fast. Let students see it by turning the pulley slowly by hand.</span>
+      </p>
+    </div>
+    <div class="card">
+      <h3>🛡️ <span lang="el">Ο ιμάντας «γλιστράει» – και αυτό είναι καλό</span><span lang="en">The belt slips – and that's good</span></h3>
+      <p>
+        <span lang="el">Αν το όχημα κολλήσει σε κάτι, το λαστιχάκι γλιστράει αντί να «ζοριστεί» το μοτέρ. Ρωτήστε τους μαθητές: πού αλλού χρειάζεται κάτι να γλιστρά για ασφάλεια;</span>
+        <span lang="en">If the vehicle gets stuck, the rubber band slips instead of straining the motor. Ask students: where else is it useful for something to slip, for safety?</span>
+      </p>
+    </div>
+    <div class="card">
+      <h3>🔌 <span lang="el">Πριν ξεκινήσετε</span><span lang="en">Before you start</span></h3>
+      <p>
+        <span lang="el">Ανοίξτε το HubBlocks, πατήστε <b>Σύνδεση hub</b> πάνω δεξιά και διαλέξτε το hub σας. Χωρίς hub, τα προγράμματα δουλεύουν σε <b>προσομοίωση</b>: η ρόδα του Μοτέρ γυρίζει στη σκηνή.</span>
+        <span lang="en">Open HubBlocks, press <b>Connect hub</b> at the top right and choose your hub. Without a hub the programs run in <b>simulation</b>: the Motor sprite's wheel turns on the stage.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="programs">
+  <div class="wrap">
+    <h2>💻 <span lang="el">Προγράμματα</span><span lang="en">Programs</span></h2>
+    <p class="sub"><span lang="el">Από το πιο απλό στο πιο δύσκολο. Κάθε πρόγραμμα ανοίγει έτοιμο στο HubBlocks.</span><span lang="en">From the simplest to the hardest. Each one opens ready-made in HubBlocks.</span></p>
+    <div id="programList"></div>
+  </div>
+</section>
+
+<section id="challenges">
+  <div class="wrap">
+    <h2>🏁 <span lang="el">Προκλήσεις</span><span lang="en">Challenges</span></h2>
+    <p class="sub"><span lang="el">Χωρίς έτοιμη λύση – σκεφτείτε, δοκιμάστε, βελτιώστε.</span><span lang="en">No ready-made solution – think, test, improve.</span></p>
+    <div class="grid2">
+      <div class="card"><h3>📏 <span lang="el">Ακριβώς 1 μέτρο</span><span lang="en">Exactly 1 metre</span></h3>
+        <p><span lang="el">Κάντε το όχημα να σταματήσει όσο πιο κοντά γίνεται στο 1 μέτρο. Ποια ισχύ και ποιον χρόνο διαλέξατε;</span><span lang="en">Make the vehicle stop as close as possible to 1 metre. Which power and time did you choose?</span></p></div>
+      <div class="card"><h3>🚦 <span lang="el">Φανάρι</span><span lang="en">Traffic light</span></h3>
+        <p><span lang="el">Πράσινο φως όσο κινείται, κίτρινο πριν σταματήσει, κόκκινο όταν σταματά.</span><span lang="en">Green light while moving, yellow just before stopping, red when stopped.</span></p></div>
+      <div class="card"><h3>📦 <span lang="el">Παράδοση και επιστροφή</span><span lang="en">Deliver and return</span></h3>
+        <p><span lang="el">Το όχημα πηγαίνει ως τον τοίχο, σταματά, περιμένει 2 δευτερόλεπτα για «παράδοση» και γυρίζει πίσω.</span><span lang="en">The vehicle drives to the wall, stops, waits 2 seconds for the “delivery” and comes back.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>🧑‍🏫 <span lang="el">Σημειώσεις για εκπαιδευτικούς</span><span lang="en">Teacher notes</span></h2>
+    <details><summary><span lang="el">Χρονοδιάγραμμα</span><span lang="en">Timing</span></summary>
+      <ul>
+        <li><span lang="el">1η ώρα: κατασκευή (25′), προγράμματα 1–2 (20′).</span><span lang="en">Lesson 1: build (25′), programs 1–2 (20′).</span></li>
+        <li><span lang="el">2η ώρα: προγράμματα 3–6 (30′), μία πρόκληση (15′).</span><span lang="en">Lesson 2: programs 3–6 (30′), one challenge (15′).</span></li>
+      </ul></details>
+    <details><summary><span lang="el">Συχνά προβλήματα</span><span lang="en">Common problems</span></summary>
+      <ul>
+        <li><span lang="el">Το όχημα «διστάζει» ή οι ρόδες δεν γυρίζουν: το λαστιχάκι είναι χαλαρό ή βγήκε από την τροχαλία ή από το κίτρινο δαχτυλίδι (βήμα 21).</span><span lang="en">The vehicle hesitates or the wheels don't turn: the rubber band is loose or has slipped off the pulley or the yellow bush (step 21).</span></li>
+        <li><span lang="el">Πηγαίνει ανάποδα: αλλάξτε φορά (πρόγραμμα 2) – δεν είναι λάθος, είναι ανακάλυψη!</span><span lang="en">It drives backwards: change the direction (program 2) – not a mistake, a discovery!</span></li>
+        <li><span lang="el">Το πρόγραμμα 5 χρειάζεται πληκτρολόγιο. Σε tablet χωρίς πληκτρολόγιο, χρησιμοποιήστε το πρόγραμμα 4 (κουμπί του hub).</span><span lang="en">Program 5 needs a keyboard. On a tablet without one, use program 4 (hub button) instead.</span></li>
+        <li><span lang="el">Ο αισθητήρας απόστασης δίνει τιμές περίπου 0–100· δοκιμάστε με το χέρι πριν ορίσετε το 30.</span><span lang="en">The distance sensor reports roughly 0–100; test with your hand before settling on 30.</span></li>
+      </ul></details>
+    <details><summary><span lang="el">Επέκταση</span><span lang="en">Going further</span></summary>
+      <p><span lang="el">Μετρήστε πόσες στροφές κάνει ο πίσω άξονας για μία στροφή της τροχαλίας του μοτέρ (σημαδέψτε τα με ένα κομματάκι χαρτοταινίας). Τι θα γινόταν αν το λαστιχάκι πήγαινε από μικρό σε μεγάλο; Είναι η αρχή για τα γρανάζια.</span><span lang="en">Count how many times the rear axle turns for one turn of the motor pulley (mark both with a bit of tape). What would happen if the band went from small to big? It's the first step towards gears.</span></p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span lang="el">Τα LEGO® και WeDo είναι εμπορικά σήματα του ομίλου LEGO, ο οποίος δεν χορηγεί, δεν εξουσιοδοτεί και δεν εγκρίνει αυτόν τον ιστότοπο. Οδηγίες κατασκευής: Κωνσταντίνος Μπεζαΐτης, με το BrickLink Studio.</span>
+    <span lang="en">LEGO® and WeDo are trademarks of the LEGO Group, which does not sponsor, authorize or endorse this site. Building instructions: Konstantinos Bezaitis, made with BrickLink Studio.</span>
+    · <a href="../../privacy.html"><span lang="el">Απόρρητο</span><span lang="en">Privacy</span></a>
+  </div>
+</footer>
+
+<script>
+  // ---------- language ----------
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('hubblocks-site-lang'); } catch (e) {}
+    var lang = saved || ((navigator.language || '').toLowerCase().indexOf('el') === 0 ? 'el' : 'en');
+    function set (l) {
+      document.documentElement.setAttribute('data-lang', l); document.documentElement.lang = l;
+      document.querySelectorAll('[data-set]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.set === l)); });
+      try { localStorage.setItem('hubblocks-site-lang', l); } catch (e) {}
+    }
+    document.querySelectorAll('[data-set]').forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.set); }); });
+    set(lang);
+  })();
+
+  // ---------- step viewer ----------
+  (function () {
+    var N = 22, cur = 1;
+    var img = document.getElementById('stepImg'), no = document.getElementById('stepNo');
+    var prev = document.getElementById('prev'), next = document.getElementById('next'), slider = document.getElementById('slider');
+    var src = function (i) { return 'steps/step-' + (i < 10 ? '0' : '') + i + '.webp'; };
+    function show (i) {
+      cur = Math.max(1, Math.min(N, i));
+      img.src = src(cur); no.textContent = cur; slider.value = cur;
+      prev.disabled = cur === 1; next.disabled = cur === N;
+      if (cur < N) { var p = new Image(); p.src = src(cur + 1); }   // preload the next step
+    }
+    prev.addEventListener('click', function () { show(cur - 1); });
+    next.addEventListener('click', function () { show(cur + 1); });
+    slider.addEventListener('input', function () { show(+slider.value); });
+    document.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'INPUT' && e.target !== slider) return;
+      if (e.key === 'ArrowRight') { show(cur + 1); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') { show(cur - 1); e.preventDefault(); }
+    });
+    show(1);
+  })();
+
+  // ---------- programs ----------
+  (function () {
+    var P = [
+      { id: 'p1-go',
+        el: ['Ξεκίνα!', 'Το πρώτο ταξίδι του οχήματος.', 'Με τη σημαία, το μοτέρ λειτουργεί για 2 δευτερόλεπτα και το όχημα κινείται.', 'Προς τα πού πήγε; Μπροστά ή πίσω; Σημειώστε το.'],
+        en: ['Go!', 'The vehicle\u2019s first trip.', 'With the green flag, the motor runs for 2 seconds and the vehicle moves.', 'Which way did it go – forward or backward? Write it down.'] },
+      { id: 'p2-forward-back',
+        el: ['Μπρος – πίσω', 'Να πάει και να επιστρέψει στην αφετηρία.', 'Το όχημα κινείται 2 δευτερόλεπτα προς τη μία φορά και 2 προς την άλλη.', 'Γύρισε ακριβώς στο ίδιο σημείο; Αν όχι, γιατί;'],
+        en: ['Forward and back', 'Go out and return to the start.', 'The vehicle moves 2 seconds one way, then 2 seconds the other way.', 'Did it return to exactly the same spot? If not, why?'] },
+      { id: 'p3-speeds',
+        el: ['Αργά, μέτρια, γρήγορα', 'Πόσο μακριά φτάνει με κάθε ισχύ;', 'Τρεις διαδρομές των 2 δευτερολέπτων, με ισχύ 3, 6 και 10.', 'Μετρήστε την απόσταση κάθε διαδρομής. Τι παρατηρείτε;'],
+        en: ['Slow, medium, fast', 'How far does it get with each power?', 'Three 2-second runs, with power 3, 6 and 10.', 'Measure each distance. What do you notice?'] },
+      { id: 'p4-hub-button',
+        el: ['Το κουμπί του hub', 'Ξεκίνημα χωρίς οθόνη!', 'Πατώντας το πράσινο κουμπί του hub, το φως γίνεται πράσινο και το όχημα κινείται 3 δευτερόλεπτα.', 'Ιδανικό για tablet: οδηγείτε μόνο με το κουμπί πάνω στο όχημα.'],
+        en: ['The hub button', 'Start without touching the screen!', 'Pressing the hub\u2019s green button turns the light green and drives for 3 seconds.', 'Great for tablets: drive using only the button on the vehicle.'] },
+      { id: 'p5-remote',
+        el: ['Τηλεκατεύθυνση', 'Οδηγήστε το με το πληκτρολόγιο.', '↑ μπροστά, ↓ πίσω, διάστημα για στοπ. Κάθε πλήκτρο έχει το δικό του σενάριο.', 'Στήστε μια διαδρομή με εμπόδια και οδηγήστε το ως τον τερματισμό.'],
+        en: ['Remote control', 'Drive it from the keyboard.', '↑ forward, ↓ back, space to stop. Each key has its own script.', 'Set up an obstacle course and drive it to the finish.'] },
+      { id: 'p6-wall',
+        el: ['Στοπ πριν από τον τοίχο', 'Το όχημα σταματά μόνο του.', 'Ξεκινά με πράσινο φως. Όταν ο αισθητήρας «δει» κάτι πιο κοντά από 30, σταματά και ανάβει κόκκινο.', 'Αλλάξτε το 30. Πόσο κοντά μπορεί να σταματήσει με ασφάλεια;'],
+        en: ['Stop before the wall', 'The vehicle stops by itself.', 'It starts with a green light. When the sensor sees something closer than 30, it stops and turns red.', 'Change the 30. How close can it safely stop?'] }
+    ];
+    var L = {
+      el: { goal: 'Στόχος:', what: 'Τι συμβαίνει:', try: 'Δοκιμάστε:', open: '▶ Άνοιγμα στο HubBlocks', dl: '⬇ Λήψη .sb3' },
+      en: { goal: 'Goal:', what: 'What happens:', try: 'Try this:', open: '▶ Open in HubBlocks', dl: '⬇ Download .sb3' }
+    };
+    var editor = new URL('../../editor/editor.html', location.href);
+    var list = document.getElementById('programList');
+    P.forEach(function (p, i) {
+      var file = new URL('programs/' + p.id + '.sb3', location.href).href;
+      var open = editor.href + '?project_url=' + encodeURIComponent(file);
+      var html = '<article class="prog"><div>';
+      html += '<h3><span class="num">' + (i + 1) + '</span>' + ['el', 'en'].map(function (l) { return '<span lang="' + l + '">' + p[l][0] + '</span>'; }).join('') + '</h3>';
+      ['el', 'en'].forEach(function (l) {
+        html += '<div lang="' + l + '"><p><span class="label">' + L[l].goal + '</span> ' + p[l][1] + '</p>' +
+                '<p><span class="label">' + L[l].what + '</span> ' + p[l][2] + '</p>' +
+                '<p><span class="label">' + L[l].try + '</span> ' + p[l][3] + '</p>' +
+                '<div class="actions"><a class="btn primary" target="_blank" rel="noopener" href="' + open + '">' + L[l].open + '</a>' +
+                '<a class="btn ghost" href="' + file + '" download>' + L[l].dl + '</a></div></div>';
+      });
+      html += '</div><div class="blocks">' +
+              '<img lang="el" src="blocks/' + p.id + '-el.png" alt="' + p.el[0] + '" loading="lazy" onload="this.style.width=(this.naturalWidth/2)+\'px\'">' +
+              '<img lang="en" src="blocks/' + p.id + '-en.png" alt="' + p.en[0] + '" loading="lazy" onload="this.style.width=(this.naturalWidth/2)+\'px\'">' +
+              '</div></article>';
+      list.insertAdjacentHTML('beforeend', html);
+    });
+  })();
+</script>
+</body>
+</html>
